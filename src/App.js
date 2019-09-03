@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getCards } from './redux/actions/cards-action';
+import { getCards, getLocalStorage, saveToLocalStorage } from './redux/actions/cards-action';
 import { bindActionCreators } from 'redux';
 import TheCard from './components/card';
+import { createRipple } from './functions/ripple';
 
 class App extends Component {
 	constructor() {
@@ -12,33 +13,44 @@ class App extends Component {
 
 	componentDidMount() {
 		this.props.getCards();
+		this.props.getLocalStorage();
+		const buttons = document.getElementsByTagName('button');
+		// ripple effect for buttons
+        Array.prototype.forEach.call(buttons, function (b) {
+            b.addEventListener('click', createRipple);
+        });
 	}
+
 	changeRandomIndex = () => {
-		const randomIndex = Math.floor(Math.random() * (this.props.cards.allCards.length-1)) 
+		const randomIndex = Math.floor(Math.random() * (this.props.cards.allCards.length));
+		if (randomIndex === this.state.randomIndex) return this.changeRandomIndex();
 		this.setState({
 			randomIndex
 		})
 	}
 
 	render() {
-		console.log(this.props)
+		console.log('app', this.props.cards.localStorage)
 		return (
 			<div className="App">
+				<div className="App-line"></div>
 				<header className="App-header">
 					<h1>
 						card app
          	 		</h1>
 				</header>
-				<div className="body">
+				<div className="App-body">
 					{
 						this.props.cards.allCards &&
 						<TheCard 
 							card={this.props.cards.allCards[this.state.randomIndex]}
+							saveToLocalStorage = {this.props.saveToLocalStorage}
+							localStorage={this.props.cards.localStorage}
 						/>
 					}
 				</div>
-				<div className="button">
-					<button onClick={this.changeRandomIndex}>Try</button>
+				<div className="App-footer">
+					<button className="footer__button" onClick={this.changeRandomIndex}>Try</button>
 				</div>
 			</div>
 		);
@@ -51,7 +63,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, props) => {
 	return bindActionCreators({
-		getCards
+		getCards, saveToLocalStorage, getLocalStorage
 	}, dispatch)
 }
 

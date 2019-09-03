@@ -6,6 +6,11 @@ export default (state={}, {type, payload={}}) => {
                 ...state,
                 allCards: payload.allCards
             }
+        case 'LOCAL_STORAGE':
+            return {
+                ...state,
+                localStorage: payload
+            }
     
         default:
             return {...state}
