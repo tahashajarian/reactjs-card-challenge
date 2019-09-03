@@ -1,26 +1,59 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getCards } from './redux/actions/cards-action';
+import { bindActionCreators } from 'redux';
+import TheCard from './components/card';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+	constructor() {
+		super();
+		this.state = {randomIndex: 0}
+	}
+
+	componentDidMount() {
+		this.props.getCards();
+	}
+	changeRandomIndex = () => {
+		const randomIndex = Math.floor(Math.random() * (this.props.cards.allCards.length-1)) 
+		this.setState({
+			randomIndex
+		})
+	}
+
+	render() {
+		console.log(this.props)
+		return (
+			<div className="App">
+				<header className="App-header">
+					<h1>
+						card app
+         	 		</h1>
+				</header>
+				<div className="body">
+					{
+						this.props.cards.allCards &&
+						<TheCard 
+							card={this.props.cards.allCards[this.state.randomIndex]}
+						/>
+					}
+				</div>
+				<div className="button">
+					<button onClick={this.changeRandomIndex}>Try</button>
+				</div>
+			</div>
+		);
+	}
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+	cards: state.cards
+})
+
+const mapDispatchToProps = (dispatch, props) => {
+	return bindActionCreators({
+		getCards
+	}, dispatch)
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
