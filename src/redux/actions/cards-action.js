@@ -3,7 +3,6 @@ import axios from 'axios';
 export const getCards = () => {
     return dispatch => {
         axios.get('http://static.pushe.co/challenge/json', {})
-        .then(res=>res.json())
         .then(data => {
                 return dispatch({
                     type: 'LIST_CARDS',
