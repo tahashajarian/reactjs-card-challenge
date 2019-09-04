@@ -30,7 +30,6 @@ class App extends Component {
 	}
 
 	render() {
-		console.log('app', this.props.cards.localStorage)
 		return (
 			<div className="App">
 				<div className="App-line"></div>
