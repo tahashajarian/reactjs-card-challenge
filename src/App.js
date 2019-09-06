@@ -42,12 +42,14 @@ class App extends Component {
 				</header>
 				<div className="App-body">
 					{
-						this.props.cards.allCards &&
+						this.props.cards.allCards ?
 						<TheCard 
 							card={this.props.cards.allCards[this.state.randomIndex]}
 							saveToLocalStorage = {this.props.saveToLocalStorage}
 							localStorage={this.props.cards.localStorage}
 						/>
+						:
+						<p> There is no card to show :(</p>
 					}
 				</div>
 				<div className="App-footer">
