@@ -22,11 +22,13 @@ class App extends Component {
 	}
 
 	changeRandomIndex = () => {
-		const randomIndex = Math.floor(Math.random() * (this.props.cards.allCards.length));
-		if (randomIndex === this.state.randomIndex) return this.changeRandomIndex();
-		this.setState({
-			randomIndex
-		})
+		if (this.props.cards.allCards) {
+			const randomIndex = Math.floor(Math.random() * (this.props.cards.allCards.length));
+			if (randomIndex === this.state.randomIndex) return this.changeRandomIndex();
+			this.setState({
+				randomIndex
+			})
+		}
 	}
 
 	render() {
