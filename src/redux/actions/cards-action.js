@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export const getCards = () => {
-    return dispatch => {
-        axios.get('http://static.pushe.co/challenge/json', {})
+    return async dispatch => {
+        await axios.get('http://static.pushe.co/challenge/json')
         .then(data => {
                 return dispatch({
                     type: 'LIST_CARDS',
@@ -11,7 +11,9 @@ export const getCards = () => {
                     }
                 })
             }
-        )
+        ).catch(error => {
+            console.log(error)
+        })
     }
 }
 
